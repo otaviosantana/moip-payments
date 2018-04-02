@@ -90,7 +90,7 @@
 						React.createElement(
 							'div',
 							{ className: 'col-75' },
-							React.createElement('input', { name: 'amount', type: 'text', value: this.props.amount, onChange: this.props.onChange })
+							React.createElement('input', { name: 'amount', type: 'text', value: this.props.amount, onChange: this.props.onChange, required: true })
 						)
 					),
 					React.createElement(
@@ -110,7 +110,7 @@
 							{ className: 'col-75' },
 							React.createElement(
 								'select',
-								{ name: 'paymentType', value: this.props.paymentType, onChange: this.props.onChange },
+								{ name: 'paymentType', value: this.props.paymentType, onChange: this.props.onChange, required: true },
 								React.createElement(
 									'option',
 									{ value: 'creditcard' },
@@ -197,7 +197,7 @@
 						React.createElement(
 							'div',
 							{ className: 'col-75' },
-							React.createElement('input', { name: 'cardHolderName', type: 'text', value: this.props.cardHolderName, onChange: this.props.onChange })
+							React.createElement('input', { name: 'cardHolderName', type: 'text', value: this.props.cardHolderName, onChange: this.props.onChange, required: true })
 						)
 					),
 					React.createElement(
@@ -217,7 +217,7 @@
 							{ className: 'col-75' },
 							React.createElement('input', { name: 'number', type: 'text', value: this.props.number, onChange: this.props.onChange, maxLength: '16', onInput: function onInput(event) {
 									return _this3.onInputChange(event);
-								} }),
+								}, required: true }),
 							showIssuer ? React.createElement(
 								'label',
 								null,
@@ -244,7 +244,7 @@
 							React.createElement('input', { name: 'cardExpirationDate', type: 'text', value: this.props.cardExpirationDate, placeholder: 'MM/yyyy',
 								onChange: this.props.onChange, onInput: function onInput(event) {
 									return _this3.onInputDateChange(event);
-								}, maxLength: '7' })
+								}, maxLength: '7', required: true })
 						)
 					),
 					React.createElement(
@@ -264,7 +264,7 @@
 							{ className: 'col-75' },
 							React.createElement('input', { name: 'cvv', type: 'text', value: this.props.cvv, maxLength: '3', onChange: this.props.onChange, onInput: function onInput(event) {
 									return _this3.onInputChange(event);
-								} })
+								}, required: true })
 						)
 					)
 				);
@@ -371,7 +371,7 @@
 							React.createElement(
 								'div',
 								{ className: 'col-75' },
-								React.createElement('input', { name: 'name', type: 'text', value: this.state.name, onChange: this.handleChange })
+								React.createElement('input', { name: 'name', type: 'text', value: this.state.name, onChange: this.handleChange, required: true })
 							)
 						),
 						React.createElement(
@@ -389,7 +389,7 @@
 							React.createElement(
 								'div',
 								{ className: 'col-75' },
-								React.createElement('input', { name: 'email', type: 'text', value: this.state.email, onChange: this.handleChange })
+								React.createElement('input', { name: 'email', type: 'text', value: this.state.email, onChange: this.handleChange, required: true })
 							)
 						),
 						React.createElement(
@@ -407,7 +407,7 @@
 							React.createElement(
 								'div',
 								{ className: 'col-75' },
-								React.createElement('input', { name: 'cpf', type: 'text', value: this.state.cpf, onChange: this.handleChange })
+								React.createElement('input', { name: 'cpf', type: 'text', value: this.state.cpf, onChange: this.handleChange, required: true })
 							)
 						),
 						React.createElement(PaymentTypeForm, { onChange: this.handleChange, paymentType: this.state.paymentType, amount: this.state.amount }),

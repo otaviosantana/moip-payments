@@ -17,7 +17,7 @@ class PaymentTypeForm extends React.Component {
 					<label>Total Amount:</label>
 				</div>
 				<div className="col-75">
-			      <input name="amount" type="text" value={this.props.amount} onChange={this.props.onChange}/>
+			      <input name="amount" type="text" value={this.props.amount} onChange={this.props.onChange} required/>
 			    </div>
 		    </div>
 			<div className="row">
@@ -25,7 +25,7 @@ class PaymentTypeForm extends React.Component {
 					<label>Choose payment type:</label>
 				</div>
 				<div className="col-75">
-			      <select name="paymentType" value={this.props.paymentType} onChange={this.props.onChange}>
+			      <select name="paymentType" value={this.props.paymentType} onChange={this.props.onChange} required>
 			        <option value="creditcard">Credit Card</option>
 			        <option value="boleto">Boleto</option>
 			      </select>
@@ -79,7 +79,7 @@ class CardForm extends React.Component {
 						<label>Card Holder Name:</label>
 					</div>
 					<div className="col-75">
-						<input name="cardHolderName" type="text" value={this.props.cardHolderName} onChange={this.props.onChange}/>
+						<input name="cardHolderName" type="text" value={this.props.cardHolderName} onChange={this.props.onChange} required/>
 					</div>
 				</div>
 				<div className="row">
@@ -87,7 +87,7 @@ class CardForm extends React.Component {
 						<label>Card Number:</label>
 					</div>
 					<div className="col-75">
-						<input name="number" type="text" value={this.props.number} onChange={this.props.onChange} maxLength="16" onInput={event => this.onInputChange(event)}/>
+						<input name="number" type="text" value={this.props.number} onChange={this.props.onChange} maxLength="16" onInput={event => this.onInputChange(event)} required/>
 						{ showIssuer ? <label>  {this.props.issuer}</label> : null }
 					</div>
 				</div>
@@ -97,7 +97,7 @@ class CardForm extends React.Component {
 					</div>
 					<div className="col-75">
 						<input name="cardExpirationDate" type="text" value={this.props.cardExpirationDate} placeholder="MM/yyyy"
-							onChange={this.props.onChange} onInput={event => this.onInputDateChange(event)} maxLength="7" />
+							onChange={this.props.onChange} onInput={event => this.onInputDateChange(event)} maxLength="7" required/>
 					</div>
 				</div>
 				<div className="row">
@@ -105,7 +105,7 @@ class CardForm extends React.Component {
 						<label>CVV:</label>
 					</div>
 					<div className="col-75">
-						<input name="cvv" type="text" value={this.props.cvv} maxLength="3" onChange={this.props.onChange} onInput={event => this.onInputChange(event)}/>
+						<input name="cvv" type="text" value={this.props.cvv} maxLength="3" onChange={this.props.onChange} onInput={event => this.onInputChange(event)} required/>
 					</div>
 				</div>
 			</div>
@@ -181,7 +181,7 @@ class CheckoutForm extends React.Component {
 			        <label>Customer name:</label>
 			    </div>
 			    <div className="col-75">
-		        	<input name="name" type="text" value={this.state.name} onChange={this.handleChange} />
+		        	<input name="name" type="text" value={this.state.name} onChange={this.handleChange} required/>
 		        </div>
         	</div>
         	<div className="row">
@@ -189,7 +189,7 @@ class CheckoutForm extends React.Component {
 			        <label>Email:</label>
 			    </div>
 			    <div className="col-75">
-		        	<input name="email" type="text" value={this.state.email} onChange={this.handleChange} />
+		        	<input name="email" type="text" value={this.state.email} onChange={this.handleChange}required />
 		        </div>
         	</div>
         	<div className="row">
@@ -197,7 +197,7 @@ class CheckoutForm extends React.Component {
 			        <label>CPF:</label>
 			    </div>
 			    <div className="col-75">
-		        	<input name="cpf" type="text" value={this.state.cpf} onChange={this.handleChange} />
+		        	<input name="cpf" type="text" value={this.state.cpf} onChange={this.handleChange} required/>
 		        </div>
         	</div>
 	        <PaymentTypeForm onChange={ this.handleChange } paymentType={ this.state.paymentType } amount={ this.state.amount }/>
