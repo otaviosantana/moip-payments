@@ -27,7 +27,7 @@ public class CardMockController {
 		return ResponseEntity.ok().build();
 	}
 
-	@PutMapping(path = "aprove")
+	@PutMapping(path = "approve")
 	public ResponseEntity<?> approveMock() {
 		creditCardClientMock.approveResponse();
 		return ResponseEntity.ok().build();
