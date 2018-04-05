@@ -1,6 +1,12 @@
 package com.moip.core.client.creditcard;
 
+import java.math.BigDecimal;
+import java.security.SecureRandom;
+
 import org.springframework.stereotype.Component;
+
+import com.moip.core.model.Card;
+import com.moip.core.model.PaymentStatus;
 
 import lombok.Getter;
 
@@ -11,8 +17,12 @@ public class CreditCardClientMock implements CreditCardClient {
 	private CreditResponseType creditResponseType = CreditResponseType.APPROVED;
 
 	@Override
-	public CreditCardPaymentResponse newPayment() {
-		return new CreditCardPaymentResponse("authorizationCode", creditResponseType.getPaymentStatus());
+	public CreditCardPaymentResponse newPayment(BigDecimal transactionAmount, Card card) {
+		String authorizationCode = null;
+		if (creditResponseType == CreditResponseType.APPROVED) {
+			authorizationCode = String.valueOf(new SecureRandom().nextInt(1_000_000));
+		}
+		return new CreditCardPaymentResponse(authorizationCode, creditResponseType.getPaymentStatus());
 	}
 
 	public void approveResponse() {
@@ -29,13 +39,13 @@ public class CreditCardClientMock implements CreditCardClient {
 
 	@Getter
 	public enum CreditResponseType {
-		APPROVED(CreditCardPaymentStatus.APPROVED),
-		REPROVED(CreditCardPaymentStatus.REPROVED),
-		TIMEOUT(CreditCardPaymentStatus.PENDING);
+		APPROVED(PaymentStatus.APPROVED),
+		REPROVED(PaymentStatus.REPROVED),
+		TIMEOUT(PaymentStatus.PENDING);
 
-		private final CreditCardPaymentStatus paymentStatus;
+		private final PaymentStatus paymentStatus;
 
-		private CreditResponseType(CreditCardPaymentStatus paymentStatus) {
+		private CreditResponseType(PaymentStatus paymentStatus) {
 			this.paymentStatus = paymentStatus;
 		}
 	}

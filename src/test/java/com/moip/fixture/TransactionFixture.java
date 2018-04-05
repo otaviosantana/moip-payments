@@ -1,7 +1,7 @@
 package com.moip.fixture;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.YearMonth;
 import java.util.UUID;
 
 import com.moip.core.model.Card;
@@ -16,6 +16,7 @@ import br.com.six2six.fixturefactory.Rule;
 
 public class TransactionFixture {
 
+	private static final YearMonth CARD_EXPIRATION_DATE = YearMonth.of(3000, 1);
     public static final String VALID_WITH_BOLETO = "valid-with-boleto";
     public static final String VALID_WITH_CARD = "valid-with-card";
     public static final String VALID_BUYER = "valid-buyer";
@@ -38,7 +39,7 @@ public class TransactionFixture {
             {
                 add("cardHolderName", "Card Holder Name");
                 add("number", "9999158288437434");
-                add("cardExpirationDate", new Date());
+                add("cardExpirationDate", CARD_EXPIRATION_DATE);
                 add("cvv", "809");
             }
         });
@@ -46,7 +47,7 @@ public class TransactionFixture {
             {
                 add("cardHolderName", "Card Holder Name");
                 add("number", "4556158288437433");
-                add("cardExpirationDate", new Date());
+                add("cardExpirationDate", CARD_EXPIRATION_DATE);
                 add("cvv", "809");
             }
         });

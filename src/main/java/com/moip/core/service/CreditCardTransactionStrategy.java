@@ -3,10 +3,11 @@ package com.moip.core.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.moip.core.client.creditcard.CreditCardClient;
+import com.moip.core.client.creditcard.CreditCardClient.CreditCardPaymentResponse;
 import com.moip.core.model.Card;
 import com.moip.core.model.Payment;
 import com.moip.core.model.PaymentResponse;
-import com.moip.core.model.PaymentStatus;
 import com.moip.core.model.PaymentType;
 import com.moip.core.model.Transaction;
 import com.moip.core.repository.TransactionRepository;
@@ -17,10 +18,12 @@ import br.com.moip.validators.CreditCard;
 public class CreditCardTransactionStrategy implements TransactionStrategy {
 
     private TransactionRepository transactionRepository;
+    private CreditCardClient creditCardClient;
 
     @Autowired
-    public CreditCardTransactionStrategy(TransactionRepository transactionRepository) {
+    public CreditCardTransactionStrategy(TransactionRepository transactionRepository, CreditCardClient creditCardClient) {
         this.transactionRepository = transactionRepository;
+        this.creditCardClient = creditCardClient;
     }
 
     @Override
@@ -37,9 +40,10 @@ public class CreditCardTransactionStrategy implements TransactionStrategy {
             throw new IllegalArgumentException("Invalid card number");
         }
         transactionRepository.save(transaction);
-        PaymentStatus status = PaymentStatus.APPROVED;
-        payment.setStatus(status);
+        CreditCardPaymentResponse paymentResponse = creditCardClient.newPayment(payment.getAmount(), payment.getCard());
+        payment.setStatus(paymentResponse.getPaymentStatus());
+        card.setAuthorizationCode(paymentResponse.getAuthorizationCode());
         transactionRepository.save(transaction);
-        return new PaymentResponse(status, null);
+        return new PaymentResponse(paymentResponse.getPaymentStatus(), null);
     }
 }

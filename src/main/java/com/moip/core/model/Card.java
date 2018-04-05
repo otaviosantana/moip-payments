@@ -10,6 +10,8 @@ import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.Transient;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Data;
 
 @Data
@@ -28,4 +30,6 @@ public class Card {
     @Length(min = 3, max = 3)
     @Transient
     private String cvv;
+    @JsonIgnore
+    private String authorizationCode;
 }
