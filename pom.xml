@@ -19,7 +19,6 @@
     <lombok.version>1.16.20</lombok.version>
     <lombok-maven.version>1.16.20.0</lombok-maven.version>
     <feign.version>8.18.0</feign.version>
-    <joda-time.version>2.9.9</joda-time.version>
     <junit.version>4.12</junit.version>
     <fixture.factory.version>3.1.0</fixture.factory.version>
   </properties>
@@ -91,11 +90,6 @@
 	    <artifactId>feign-slf4j</artifactId>
 	    <version>${feign.version}</version>
 	</dependency>
-<!-- https://mvnrepository.com/artifact/joda-time/joda-time -->
-	<dependency>
-	    <groupId>joda-time</groupId>
-	    <artifactId>joda-time</artifactId>
-	</dependency>
 	<!-- Tests dependency -->
 	<dependency>
 	  <groupId>junit</groupId>
@@ -124,6 +118,7 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
 					<addResources>true</addResources>
+					<finalName>payments</finalName>
 				</configuration>
 			</plugin>
 
