@@ -30,6 +30,7 @@ Ou gerar a imagem docker
 E subir o container com a imagem gerada:
 > docker run -d -p 8080:8080 --rm moip:payments
 
+A aplicação estará disponível em http://localhost:8080
 
 Wiki com motivação e todas as infos necessárias para:
 * [Motivação](https://github.com/otaviosantana/payments/wiki/Motiva%C3%A7%C3%A3o)
