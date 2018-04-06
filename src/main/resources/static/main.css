@@ -18,7 +18,7 @@ select {
     background-color: #f1f1f1;
 }
 
-input[type=submit] {
+input[type=submit],input[type=button] {
     background-color: #1f1baf;
     color: white;
     padding: 12px 20px;
@@ -26,6 +26,16 @@ input[type=submit] {
     border-radius: 4px;
     cursor: pointer;
     float: right;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+td, th {
+    border: 1px solid #999;
+    padding: 0.5rem;
+    text-align: left;
 }
 
 label {

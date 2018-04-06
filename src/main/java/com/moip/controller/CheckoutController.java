@@ -8,6 +8,6 @@ public class CheckoutController {
 
     @RequestMapping(value = "/")
     public String index() {
-        return "checkout/index";
+        return "index";
     }
 }

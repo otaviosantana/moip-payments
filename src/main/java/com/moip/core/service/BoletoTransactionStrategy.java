@@ -15,24 +15,28 @@ import com.moip.core.model.PaymentResponse;
 import com.moip.core.model.PaymentStatus;
 import com.moip.core.model.PaymentType;
 import com.moip.core.model.Transaction;
+import com.moip.core.repository.TransactionRepository;
 
 @Component
 public class BoletoTransactionStrategy implements TransactionStrategy {
 
 	private final BoletoClient boletoClient;
+	private final TransactionRepository transactionRepository;
 
 	@Value("${boleto.dayToDueDate}")
 	private Long daysToDueDate;
 	private Clock clock;
 
-	public BoletoTransactionStrategy(BoletoClient boletoClient, Clock clock) {
+	public BoletoTransactionStrategy(BoletoClient boletoClient, TransactionRepository transactionRepository, Clock clock) {
 		this.boletoClient = boletoClient;
+		this.transactionRepository = transactionRepository;
 		this.clock = clock;
 	}
 
 	@Autowired
-	public BoletoTransactionStrategy(BoletoClient boletoClient) {
+	public BoletoTransactionStrategy(BoletoClient boletoClient, TransactionRepository transactionRepository) {
 		this.boletoClient = boletoClient;
+		this.transactionRepository = transactionRepository;
 		this.clock = Clock.systemDefaultZone();
 	}
 
@@ -44,6 +48,7 @@ public class BoletoTransactionStrategy implements TransactionStrategy {
 		}
 		LocalDate dueDate = LocalDate.now(clock).plus(daysToDueDate, ChronoUnit.DAYS);
 		BoletoPaymentResponse boletoResponse = boletoClient.newPayment(payment.getAmount(), dueDate);
+		transactionRepository.save(transaction);
 		return new PaymentResponse(PaymentStatus.PENDING, boletoResponse.getBarCode());
 	}
 }

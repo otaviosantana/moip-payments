@@ -11,4 +11,4 @@ var registry = baseRegistry.child();
 module.exports = rest
 		.wrap(mime, { registry: registry })
 		.wrap(errorCode)
-		.wrap(defaultRequest, { headers: { 'Accept': 'application/json' }});
+		.wrap(defaultRequest, { headers: { 'Accept': 'application/json', 'Content-Type': 'application/json'}});

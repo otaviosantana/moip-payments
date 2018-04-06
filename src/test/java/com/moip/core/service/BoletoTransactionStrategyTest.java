@@ -20,6 +20,7 @@ import com.moip.core.model.Payment;
 import com.moip.core.model.PaymentResponse;
 import com.moip.core.model.PaymentStatus;
 import com.moip.core.model.Transaction;
+import com.moip.core.repository.TransactionRepository;
 import com.moip.fixture.TransactionFixture;
 
 import br.com.six2six.fixturefactory.Fixture;
@@ -31,6 +32,8 @@ public class BoletoTransactionStrategyTest {
 
 	@Mock
 	private BoletoClient boletoClient;
+	@Mock
+	private TransactionRepository transactionRepository;
 
 	private BoletoTransactionStrategy strategy;
 
@@ -39,7 +42,7 @@ public class BoletoTransactionStrategyTest {
 		Clock clock = Clock.fixed(Instant.parse("1910-09-01T00:00:00.00Z"), ZoneOffset.UTC);
 		TransactionFixture.setup();
 		initMocks(this);
-		strategy = new BoletoTransactionStrategy(boletoClient, clock);
+		strategy = new BoletoTransactionStrategy(boletoClient, transactionRepository, clock);
 		setInternalState(strategy, "daysToDueDate", DAYS_TO_DUE_DATE);
 	}
 

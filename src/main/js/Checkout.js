@@ -1,7 +1,4 @@
-'use strict';
-
 const React = require('react');
-const ReactDOM = require('react-dom');
 const client = require('./client');
 
 class PaymentTypeForm extends React.Component {
@@ -26,8 +23,8 @@ class PaymentTypeForm extends React.Component {
 				</div>
 				<div className="col-75">
 			      <select name="paymentType" value={this.props.paymentType} onChange={this.props.onChange} required>
-			        <option value="creditcard">Credit Card</option>
-			        <option value="boleto">Boleto</option>
+			        <option value="CREDIT_CARD">Credit Card</option>
+			        <option value="BOLETO">Boleto</option>
 			      </select>
 			    </div>
 		    </div>
@@ -54,19 +51,7 @@ class CardForm extends React.Component {
 		if (dateString.length > 2) {
 			var month = dateString.substring(0, 2);
 			var year = dateString.substring(2);
-			if (parseInt(month) > 12) {
-				event.target.value = '';
-			} else if (dateString.length == 6) {
-				var currentMonth = new Date().getMonth();
-				var currentYear = new Date().getFullYear();
-				if (year < currentYear || (year == currentYear && currentMonth > month - 1)) {
-					event.target.value = '';
-				} else {
-					event.target.value = month + '/' + year;
-				}
-			} else {
-				event.target.value = month + '/' + year;
-			}
+			event.target.value = month + '/' + year;
 		}
 	}
 
@@ -113,7 +98,7 @@ class CardForm extends React.Component {
 	}
 }
 
-class CheckoutForm extends React.Component {
+export default class Checkout extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -122,17 +107,18 @@ class CheckoutForm extends React.Component {
 		email: '',
 		cpf: '',
 		amount: '',
-		paymentType: 'creditcard',
+		paymentType: 'CREDIT_CARD',
 		cardHolderName: '',
 		number: '',
 		cardExpirationDate: '',
 		cvv: '',
-		issuer: ''
+		issuer: '',
+		paymentResponse: ''
     };
 
     this.handleCardChange = this.handleCardChange.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleOnClick = this.handleOnClick.bind(this);
   }
 
   handleChange(event) {
@@ -160,30 +146,63 @@ class CheckoutForm extends React.Component {
 	  }
   }
 
-  handleSubmit(event) {
-    event.preventDefault();
-    var client = {id: this.state.clientId};
-    var buyer = {name: this.state.name, email: this.state.email, cpf: this.state.cpf};
-    var card = {cardHolderName: this.state.cardHolderName, number: this.state.number, cardExpirationDate: this.state.cardExpirationDate, cvv: this.state.cvv};
-    var payment = {amount: this.state.amount, type: this.state.paymentType, card: card};
-    var data = {client: client, buyer: buyer, payment: payment};
-    alert(JSON.stringify(data));
+  handleOnClick() {
+	var dateString = this.state.cardExpirationDate.replace(/\//g, "");
+	var invalidFields = '';
+	if (this.state.paymentType == 'CREDIT_CARD') {
+		if (dateString.length > 2) {
+			var month = dateString.substring(0, 2);
+			var year = dateString.substring(2);
+	        if (!Moip.Validator.isExpiryDateValid(month, year)) {
+	        	invalidFields = invalidFields + 'Invalid Expiry Date\n'
+	        }
+	    } else {
+	    	invalidFields = invalidFields + 'Invalid Expiry Date\n'
+	    }
+		if (!Moip.Validator.isValid(this.state.number)) {
+			invalidFields = invalidFields + 'Invalid Card Number\n'
+		} 
+		if (this.state.cvv.length != 3){
+			invalidFields = invalidFields + 'Invalid Security Code\n'
+		}
+	}
+	if (invalidFields == '') {
+	    var buyer = {name: this.state.name, email: this.state.email, cpf: this.state.cpf};
+	    var formattedDate = (this.state.paymentType == 'CREDIT_CARD' ? dateString.substring(2) + '-' + dateString.substring(0, 2) + '-01' : null);
+	    var card = {cardHolderName: this.state.cardHolderName, number: this.state.number, cardExpirationDate: formattedDate, cvv: this.state.cvv};
+	    var payment = {amount: this.state.amount, type: this.state.paymentType, card: card};
+	    var data = {buyer: buyer, payment: payment};
+	    client({method: 'POST', entity: data, path: '/api/clients/{clientId}/transactions', params: {clientId: this.state.clientId}, headers: {'Contenty-Type': 'application/json', 'Accept': 'application/json'}}).done(response => {
+            this.setState({paymentResponse: response.entity})
+	    });
+	} else {
+		alert(invalidFields);
+	}
   }
 
   render() {
-	const hidden = this.state.paymentType == 'creditcard';
-    return (
-      <form onSubmit={this.handleSubmit}>
-      	<div className="container">
-      		<h1>Moip Payments</h1>
+	const isCreditCard = this.state.paymentType == 'CREDIT_CARD';
+	const showApiResponse = this.state.paymentResponse == '';
+	if (showApiResponse) {
+		return (
+     	<div className="container">
+      		<h1>Moip New Payment</h1>
       		<div className="row">
+	      	<div className="col-25">
+		        <label>Client Id:</label>
+		    </div>
+		    <div className="col-75">
+	        	<input name="clientId" type="text" value={this.state.clientId} onChange={this.handleChange} required/>
+	        </div>
+	    	</div>
+		  		<div className="row">
 		      	<div className="col-25">
 			        <label>Customer name:</label>
 			    </div>
 			    <div className="col-75">
 		        	<input name="name" type="text" value={this.state.name} onChange={this.handleChange} required/>
 		        </div>
-        	</div>
+			</div>
         	<div className="row">
 		        <div className="col-25">
 			        <label>Email:</label>
@@ -201,19 +220,18 @@ class CheckoutForm extends React.Component {
 		        </div>
         	</div>
 	        <PaymentTypeForm onChange={ this.handleChange } paymentType={ this.state.paymentType } amount={ this.state.amount }/>
-	        { hidden ? <CardForm onChange={ this.handleCardChange } cardHolderName={ this.state.cardHolderName } number={ this.state.number } 
+	        { isCreditCard ? <CardForm onChange={ this.handleCardChange } cardHolderName={ this.state.cardHolderName } number={ this.state.number } 
 	        			cardExpirationDate={ this.state.cardExpirationDate } cvv={ this.state.cvv } issuer={ this.state.issuer }/> : null }
 	        <div className="row">
-				<input type="submit" value="Finish" />
+				<input type="button" onClick={this.handleOnClick} value="Finish" />
 			</div>
 		 </div>
-      </form>
-    );
+		);
+      } else {
+    	  return (
+			  <p>{isCreditCard ? 'Payment Status: ' + this.state.paymentResponse.status : 'Boleto code: ' + this.state.paymentResponse.value}</p>
+		  );
+      }
   }
 }
 
-
-ReactDOM.render(
-	<CheckoutForm />,
-	document.getElementById('react')
-)
