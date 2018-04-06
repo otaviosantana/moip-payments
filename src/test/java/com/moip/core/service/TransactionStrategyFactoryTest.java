@@ -1,6 +1,6 @@
 package com.moip.core.service;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 import org.junit.Before;
@@ -30,7 +30,7 @@ public class TransactionStrategyFactoryTest {
 
 	@Test
 	public void testIfReturnsCorrectStrategyForEachPaymentType() throws Exception {
-		assertEquals(BoletoTransactionStrategy.class, factory.getStrategy(PaymentType.BOLETO).getClass());
-		assertEquals(CreditCardTransactionStrategy.class, factory.getStrategy(PaymentType.CREDIT_CARD).getClass());
+		assertTrue(factory.getStrategy(PaymentType.BOLETO) instanceof BoletoTransactionStrategy);
+		assertTrue(factory.getStrategy(PaymentType.CREDIT_CARD) instanceof CreditCardTransactionStrategy);
 	}
 }
