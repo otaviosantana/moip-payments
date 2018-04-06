@@ -20,7 +20,7 @@ public class TransactionStrategyFactory {
     private Map<PaymentType, TransactionStrategy> strategies;
 
     @PostConstruct
-    private void initStrategies() {
+    void initStrategies() {
         strategies = new HashMap<>();
         strategies.put(PaymentType.BOLETO, boletoTransactionStrategy);
         strategies.put(PaymentType.CREDIT_CARD, creditCardTransactionStrategy);

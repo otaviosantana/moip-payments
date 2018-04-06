@@ -17,6 +17,6 @@ public interface BoletoClient {
 	@AllArgsConstructor
 	class BoletoPaymentResponse {
 
-		private String authenticationCode;
+		private String barCode;
 	}
 }
