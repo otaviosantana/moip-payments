@@ -13,18 +13,18 @@ As tecnologias utilizadas foram:
 
 ## Processo de build e teste da aplicação Payments
 O build pode ser feito da seguinte maneira:
-### Unix
+##### Unix
 > ./mvnw clean install
-### Windows
+##### Windows
 > ./mvnw.cmd clean install
 
 Para subir a aplicação pode-se rodar o comando:
 > java -jar target/payments.jar
 
 Ou gerar a imagem docker
-### Unix
+##### Unix
 > docker build -t moip:payments
-### Windows
+##### Windows
 > docker build -f Dockerfile.windows -t moip:payments
 
 E subir o container com a imagem gerada:
