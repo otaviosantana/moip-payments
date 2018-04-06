@@ -1,7 +1,7 @@
 package com.moip.fixture;
 
 import java.math.BigDecimal;
-import java.time.YearMonth;
+import java.time.LocalDate;
 import java.util.UUID;
 
 import com.moip.core.model.Card;
@@ -16,7 +16,7 @@ import br.com.six2six.fixturefactory.Rule;
 
 public class TransactionFixture {
 
-	private static final YearMonth CARD_EXPIRATION_DATE = YearMonth.of(3000, 1);
+    private static final LocalDate CARD_EXPIRATION_DATE = LocalDate.of(3000, 1, 1);
     public static final String VALID_WITH_BOLETO = "valid-with-boleto";
     public static final String VALID_WITH_CARD = "valid-with-card";
     public static final String VALID_BUYER = "valid-buyer";
